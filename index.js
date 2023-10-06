@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const Xvfb = require('xvfb');
 
-const getUniSwapV3Info = async () => {
+const getEthereumTokenInfo = async () => {
   try {
     const url = "https://etherscan.io/tokens";
   
@@ -46,7 +46,7 @@ const getUniSwapV3Info = async () => {
 };
 
 const run = async() => {
-  var data = await getUniSwapV3Info();
+  var data = await getEthereumTokenInfo();
   console.log(data)
 }
 
