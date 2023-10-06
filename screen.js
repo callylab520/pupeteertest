@@ -28,7 +28,7 @@ const getEthereumTokenInfo = async () => {
     browser.close();
     xvfb.stop();
 
-    return { state: 'ok', data: topTokens }
+    return { state: 'ok' }
   } catch (error) {
     return { state: 'err', code: error.toString() }
   }
