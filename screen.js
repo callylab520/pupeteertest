@@ -21,7 +21,10 @@ const getEthereumTokenInfo = async () => {
     await page.goto(url, {waitUntil: 'networkidle2'});
 
     await page.evaluate(() => {
-      document.querySelector('#challenge-form').submit();
+      var el = document.querySelector('#challenge-form')
+      if (el != null) {
+        el.submit();
+      }
     });
 
     await page.waitForNavigation();
