@@ -5,7 +5,7 @@ const { JSDOM } = jsdom;
 
 const getTokenInfo = async() => {
   const client = new ZenRows(process.env.ZENROW);
-  const url = "https://etherscan.io/tokens";
+  const url = "https://etherscan.io/nft-top-contracts";
 
   try {
     const { data } = await client.get(url, {
@@ -13,13 +13,11 @@ const getTokenInfo = async() => {
     });
 
     const dom = new JSDOM(data)
-    const tokenList = dom.window.document.querySelectorAll("#ContentPlaceHolder1_divERC20Tokens tbody tr")
+    const tokenList = dom.window.document.querySelectorAll("#datatable_wrapper tbody tr")
     var topTokens = Array.from(tokenList).map((token) => {
       return {
-        name: token.querySelector('td:nth-child(2) .hash-tag.text-truncate.fw-medium').innerHTML,
-        address: token.querySelector('td:nth-child(2) a:first-child').getAttribute('href').slice(7),
-        price: token.querySelector('td:nth-child(3) .d-inline').getAttribute('data-bs-title'),
-        change: token.querySelector('td:nth-child(4)').textContent.trim()
+        name: token.querySelector('td:nth-child(2) .flex-grow-1.text-truncate.fw-medium').innerHTML,
+        address: token.querySelector('td:nth-child(2) a:first-child').getAttribute('href').slice(7)
       };
     })
     return topTokens;
