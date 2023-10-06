@@ -20,17 +20,27 @@ const getEthereumTokenInfo = async () => {
     await page.setDefaultNavigationTimeout(0);
     await page.goto(url, {waitUntil: 'networkidle2'});
 
+    console.log("1 ================")
+    await page.screenshot({
+      path: 'screenshot1.jpg'
+    });
+
     await page.evaluate(() => {
       var el = document.querySelector('#challenge-form')
       if (el != null) {
         el.submit();
       }
     });
+    console.log("2 ================")
+    await page.screenshot({
+      path: 'screenshot2.jpg'
+    });
 
     await page.waitForNavigation();
 
+    console.log("3 ================")
     await page.screenshot({
-      path: 'screenshot.jpg'
+      path: 'screenshot3.jpg'
     });
 
     browser.close();
