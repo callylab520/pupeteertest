@@ -1,6 +1,52 @@
 const puppeteer = require('puppeteer');
 const Xvfb = require('xvfb');
 
+const _convertNumber = (str) => {
+  str = str.replace(/</g, '');
+  if (str.indexOf('b') != -1) {
+    str = str.replace(/b/g, '');
+    str = parseFloat(str)
+    str *= 1000
+    str *= 1000
+    str *= 1000
+  }
+  else if (str.indexOf('m') != -1) {
+    str = str.replace(/m/g, '');
+    str = parseFloat(str)
+    str *= 1000
+    str *= 1000
+  }
+  else if (str.indexOf('k') != -1) {
+    str = str.replace(/k/g, '');
+    str = parseFloat(str)
+    str *= 1000
+  }
+  else {
+    str = parseFloat(str)
+  }
+  return str
+}
+
+const _filterData = (prefix, arr) => {
+  var ret = [];
+  for (var x in arr) {
+    var assets = arr[x].pool.split('/');
+    var fee = arr[x].fee.replace(/%/g, '');
+    var tvl = arr[x].tvl.replace(/\$/g, '');
+    tvl = _convertNumber(tvl);
+    var volume24 = arr[x].volume24.replace(/\$/g, '');
+    volume24 = _convertNumber(volume24);
+
+    var tmp = {
+      id: prefix + '-' + assets[0] + '-' + assets[1] + '-' + fee,
+      address: arr[x].address.toLowerCase(),
+      apr: volume24 * fee * 365 / (100 * tvl)
+    }
+    ret.push(tmp)
+  }
+  return ret;
+}
+
 const getUniSwapV3Info = async () => {
   try {
     const url = "https://info.uniswap.org/#/pools";
